@@ -7,7 +7,6 @@ class Payment(models.Model):
         (1, "Online Transaction"),
         (2, "ATM")
     ]
-    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.BigIntegerField(default=0)
     payment_at = models.DateTimeField(auto_now_add=True)
@@ -23,7 +22,6 @@ class Transaction(models.Model):
         (3, "Completed"),
         (4, "Canceled")
     ]
-    id = models.AutoField(primary_key=True)
     order = models.ForeignKey(Payment, on_delete=models.CASCADE)
     buyer = models.ForeignKey(Payment, on_delete=models.CASCADE)
     seller = models.ForeignKey(Payment, on_delete=models.CASCADE)
