@@ -1,7 +1,8 @@
 from django.db import models
-from user.models import User
+from django.contrib.auth import get_user_model
 from product.models import Product
 
+User = get_user_model()
 
 class Order(models.Model):
     STATUS_TYPES = [

@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser, AbstractBaseUser
 from django.db import models
 from region.models import Region
 
-class User(AbstractUser, AbstractBaseUser):
+class User(AbstractUser):
     status_type = []
     total_money = models.BigIntegerField(default=0)
     status = models.SmallIntegerField(choices=status_type, default=0)

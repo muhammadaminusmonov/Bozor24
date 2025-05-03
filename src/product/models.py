@@ -1,7 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from region.models import Region
 from category.models import Category
+
+User = get_user_model()
 
 class Product(models.Model):
     STATUS_CHOICES = [
