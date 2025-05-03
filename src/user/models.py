@@ -1,12 +1,7 @@
 from django.db import models
 
 class User(models.Model):
-    status_choices = [
-        (1, 'Inactive'),
-        (2, 'Active'),
-        (3, 'Banned'),
-        (4, 'Deleted'),
-    ]
+    status_choices = []
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=100, unique=True)
     first_name = models.CharField(max_length=100)
