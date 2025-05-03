@@ -15,3 +15,21 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.amount
+
+class Transaction(models.Model):
+    status_choice = [
+        (1, "Pending"),
+        (2, "Processing"),
+        (3, "Completed"),
+        (4, "Canceled")
+    ]
+    id = models.AutoField(primary_key=True)
+    order = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    buyer = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    seller = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    amount = models.BigIntegerField(null=False, blank=False)
+    status = models.SmallIntegerField(choices=status_choice, default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.amount
