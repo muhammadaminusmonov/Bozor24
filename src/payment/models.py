@@ -6,8 +6,8 @@ User = get_user_model()
 
 class Payment(models.Model):
     method_choice = [
-        (1, "Online Transaction"),
-        (2, "ATM")
+        ('1', "Online Transaction"),
+        ('2', "ATM")
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.BigIntegerField(default=0)
@@ -15,7 +15,7 @@ class Payment(models.Model):
     method = models.CharField(choices=method_choice, default=1)
 
     def __str__(self):
-        return self.amount
+        return str(self.amount)
 
 class Transaction(models.Model):
     status_choice = [
@@ -31,4 +31,4 @@ class Transaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.amount
+        return str(self.amount)
