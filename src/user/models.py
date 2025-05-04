@@ -7,7 +7,7 @@ class User(AbstractUser):
     role_type = []
     total_money = models.BigIntegerField(default=0)
     status = models.SmallIntegerField(choices=status_type, default=0)
-    region = models.ForeignKey(Region, on_delete=models.PROTECT)
+    region = models.ForeignKey(Region, on_delete=models.PROTECT, null=True, blank=True)
     role = models.CharField(choices=role_type, default="user")
 
     def __str__(self):
