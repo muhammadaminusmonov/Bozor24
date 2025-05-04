@@ -4,6 +4,7 @@ from product.models import Product
 
 User = get_user_model()
 
+
 class Order(models.Model):
     STATUS_TYPES = [
         (1, ""),
@@ -24,12 +25,13 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
-    
+
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    price_at_purchase= models.BigIntegerField()
+    price_at_purchase = models.BigIntegerField()
 
-    def  __str__(self):
-         return f"{self.order} , {self.product.title}"
+    def __str__(self):
+        return f"{self.order} , {self.product.title}"

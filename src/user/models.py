@@ -9,14 +9,14 @@ class User(AbstractUser):
     ]
 
     role_type = [
-        ("user", "User"),
-        ("admin", "Admin"),
+        ("1", "User"),
+        ("2", "Admin"),
     ]
 
     total_money = models.BigIntegerField(default=0)
     status = models.SmallIntegerField(choices=status_type, default=0)
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True, blank=True) # bu siz testcaselar ishlamayabdi
-    role = models.CharField(max_length=10, choices=role_type, default="user")
+    role = models.CharField(choices=role_type, default="user")
 
     def __str__(self):
         return self.username
