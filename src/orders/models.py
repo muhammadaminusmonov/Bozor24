@@ -3,7 +3,10 @@ from django.contrib.auth import get_user_model
 from product.models import Product
 
 User = get_user_model()
+<<<<<<< HEAD
 
+=======
+>>>>>>> db895a93631b250cb8e265dead1175fe51df9a09
 
 class Order(models.Model):
     STATUS_TYPES = [
