@@ -10,7 +10,7 @@ from .serializers import CategorySerializer
 def get_ctg_list(request):
     if request.method == 'GET':
         categories = Category.objects.all()
-        result = CategorySerializer(categories, main=True)
+        result = CategorySerializer(categories, many=True)
         print(result.data)
         return Response({"data": result.data})
     elif request.method == "GET":
