@@ -1,11 +1,5 @@
-# # orders/admin.py
-# from django.contrib import admin
-# from .models import Orders
-#
-# admin.site.register(Orders)
-
-# orders/admin.py
 from django.contrib import admin
+from .models import Order
 from .models import Order, OrderItem
 
 class OrderItemInline(admin.TabularInline):
@@ -23,4 +17,3 @@ class OrderAdmin(admin.ModelAdmin):
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('order', 'product', 'quantity', 'price_at_purchase')
     search_fields = ('product__title',)
-
