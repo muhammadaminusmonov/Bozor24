@@ -28,6 +28,7 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
     image = models.TextField()
@@ -35,24 +36,29 @@ class ProductImage(models.Model):
     def __str__(self):
         return f"Image for {self.product.title}"
 
+
 class PromotedProduct(models.Model):
-    status_choice = [
+    STATUS_CHOICES = [
         (1, "Active"),
         (2, "Inactive")
     ]
 
-    PROMO_TYPES = (
+    PROMO_TYPES = [
         (1, 'Basic'),
         (2, 'Popular'),
         (3, 'Special'),
-    )
+    ]
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    promo_type = models.CharField(max_length=50, choices=PROMO_TYPES)
+    promo_type = models.SmallIntegerField(choices=PROMO_TYPES)   # ← was CharField
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.BigIntegerField()
-    status = models.SmallIntegerField(choices=status_choice, default=2)
+    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=2)
     view_limit = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.product.title} - {self.promo_type}"
+        # get_FIELD_display() returns the human‑readable choice label
+        return (
+            f"{self.product.title} · {self.get_promo_type_display()} "
+            f"({self.get_status_display()})"
+        )
