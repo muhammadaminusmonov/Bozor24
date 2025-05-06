@@ -1,11 +1,11 @@
 from rest_framework import generics, permissions
 from product.models import Product
 from .serializers import ProductSerializer
-from api.permissions import IsSeller, IsOwnerOrReadOnly
+from ..permissions import IsOwnerOrReadOnly, IsSeller, IsPlatformAdmin
 
 
 # GET: Filtered product list
-class ProductListView(generics.ListAPIView):
+class ProductListView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     permission_classes = [permissions.AllowAny]
 
@@ -25,18 +25,15 @@ class ProductListView(generics.ListAPIView):
 class ProductCreateView(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAuthenticated, IsSeller]
-
-    def perform_create(self, serializer):
-        serializer.save(seller=self.request.user)
+    permission_classes = [permissions.IsAuthenticated, IsSeller, IsPlatformAdmin]
 
 
 # GET, PUT, DELETE: Product by pk and slug
 class ProductDetailSlugView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsSeller, IsPlatformAdmin]
     lookup_field = 'pk'
 
     def get_object(self):
-        return Product.objects.get(pk=self.kwargs['pk'], slug=self.kwargs['slug'])
+        return Product.objects.get(pk=self.kwargs['pk'])
