@@ -16,6 +16,7 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     added_at = models.DateTimeField(auto_now_add=True)
+    quantity = models.SmallIntegerField(default=1)
 
     def __str__(self):
         return f"Item {self.product.title} in Cart {self.cart.id}"
