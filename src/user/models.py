@@ -20,6 +20,7 @@ class User(AbstractUser):
     status = models.SmallIntegerField(choices=status_type, default=0)
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True, blank=True)
     role = models.CharField(choices=role_type, default="user")
+    phone = models.CharField(max_length=15, null=True, blank=True)
 
     def __str__(self):
         return self.username
