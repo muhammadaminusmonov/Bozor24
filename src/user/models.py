@@ -10,7 +10,6 @@ class User(AbstractUser):
 
     ROLE_USER = "user"
     ROLE_ADMIN = "admin"
-
     role_type = [
         (ROLE_USER, "User"),
         (ROLE_ADMIN, "Admin"),
