@@ -1,12 +1,8 @@
 from django.urls import path
-from .views import (
-    ProductListCreateView, ProductDetailView,
-    PromotedProductListCreateView, PromotedProductDetailView
-)
+from .views import ProductListView, ProductCreateView, ProductDetailSlugView
 
 urlpatterns = [
-    path('products/', ProductListCreateView.as_view(), name='product-list-create'),
-    path('products/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
-    path('promoted/', PromotedProductListCreateView.as_view(), name='promoted-list-create'),
-    path('promoted/<int:pk>/', PromotedProductDetailView.as_view(), name='promoted-detail'),
+    path('', ProductListView.as_view(), name='product-list'),  # GET with filters
+    path('user/product/', ProductCreateView.as_view(), name='product-create'),  # POST
+    path('user/product/<int:pk>/<slug:slug>/', ProductDetailSlugView.as_view(), name='product-detail-slug'),  # GET, PUT, DELETE
 ]

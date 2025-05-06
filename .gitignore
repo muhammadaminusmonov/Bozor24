@@ -2,3 +2,4 @@ __pycache__/
 bozor_venv
 .idea
 migrations
+**__pycache__/
