@@ -11,7 +11,7 @@ class Product(models.Model):
         (2, "Out of Stock")
     ]
     title = models.CharField(max_length=255)
-    seller = models.ForeignKey(User, on_delete=models.CASCADE)
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     price = models.BigIntegerField()
     discount = models.IntegerField(null=True, blank=True)
     discount_limit_date = models.DateTimeField(null=True, blank=True)
