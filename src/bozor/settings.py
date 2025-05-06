@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework.authtoken',
     'user',
     'category',
     'region',
@@ -47,7 +48,8 @@ INSTALLED_APPS = [
     'product',
     'cart',
     'orders',
-    'payment'
+    'payment',
+    'api',
 ]
 
 MIDDLEWARE = [
