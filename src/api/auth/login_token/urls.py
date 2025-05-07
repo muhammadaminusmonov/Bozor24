@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import UserLoginTokenObtainPairView, UserLoginTokenRefreshView
+from .views import LoginWithAccessTokenView, RefreshAccessTokenView
 
 urlpatterns = [
-    path('', UserLoginTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('refresh/', UserLoginTokenRefreshView.as_view(), name='token_refresh'),
+    path('', LoginWithAccessTokenView.as_view(), name='login-with-token'),
+    path('refresh/', RefreshAccessTokenView.as_view(), name='refresh-token'),
 ]

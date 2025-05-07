@@ -28,9 +28,6 @@ class RegisterAPIView(APIView):
             return Response({"message": "try again later"}, status=500)
 
     def get(self, request):
-        if not request.user.is_authenticated:
-            return Response({"message": "authentication required"}, status=401)
-
         user = request.user
         serializer = UserRegisterSerializer(user)
         return Response(serializer.data, status=200)

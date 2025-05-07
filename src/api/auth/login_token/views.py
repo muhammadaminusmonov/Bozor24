@@ -1,31 +1,67 @@
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken, TokenError
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+from rest_framework_simplejwt.tokens import UntypedToken
 
 
-class UserLoginTokenObtainPairView(TokenObtainPairView):
-    permission_classes = [AllowAny]
+def validate_token(token):
+    try:
+        untyped_token = UntypedToken(token)
+        if untyped_token.token_type == 'access':
+            return AccessToken(token)
+        elif untyped_token.token_type == 'refresh':
+            return RefreshToken(token)
+        else:
+            raise TokenError('Noto\'g\'ri token turi')
 
-    def post(self, request, *args, **kwargs):
+    except TokenError as e:
+        raise TokenError(f'Token noto\'g\'ri: {str(e)}')
+class LoginWithAccessTokenView(APIView):
+    def post(self, request):
+        token_str = request.headers.get("Authorization")
+
+        if not token_str or not token_str.startswith("Bearer "):
+            return Response({"detail": "Token required"}, status=400)
+
+        token_str = token_str.split(" ")[1]
+
         try:
-            return super().post(request, *args, **kwargs)
-        except TokenError as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response({"detail": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
+            access_token = AccessToken(token_str)
+            user_id = access_token['user_id']
+            user = User.objects.get(id=user_id)
+
+            refresh = RefreshToken.for_user(user)
+
+            return Response({
+                "access": str(refresh.access_token),
+                "refresh": str(refresh)
+            }, status=200)
+
+        except TokenError:
+            return Response({"detail": "Invalid or expired token"}, status=400)
+        except Exception:
+            return Response({"detail": "try again later"}, status=500)
 
 
-class UserLoginTokenRefreshView(TokenRefreshView):
-    permission_classes = [AllowAny]
+class RefreshAccessTokenView(APIView):
+    def post(self, request):
+        token_str = request.headers.get("Authorization")
 
-    def post(self, request, *args, **kwargs):
+        if not token_str or not token_str.startswith("Bearer "):
+            return Response({"detail": "Refresh token required"}, status=400)
+        token_str = token_str.split(" ")[1]
+
         try:
-            return super().post(request, *args, **kwargs)
-        except InvalidToken as e:
-            return Response({"detail": "Invalid or expired refresh token"},
-                            status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response({"detail": "Server error, try again later"},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            refresh_token = RefreshToken(token_str)
+            return Response({
+                "access": str(refresh_token.access_token),
+                "refresh": str(refresh_token),
+            }, status=200)
+
+        except TokenError:
+            return Response({"detail": "Invalid or expired refresh token"}, status=400)
+        except Exception:
+            return Response({"detail": "try again later"}, status=500)
