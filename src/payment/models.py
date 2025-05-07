@@ -25,7 +25,7 @@ class Transaction(models.Model):
         (4, "Canceled")
     ]
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    buyer = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.BigIntegerField(null=False, blank=False)
     status = models.SmallIntegerField(choices=status_choice, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
