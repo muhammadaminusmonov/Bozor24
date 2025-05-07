@@ -1,7 +1,4 @@
 from django.urls import path, include
-from django.contrib import admin
-from django.urls import path, include
-
 
 urlpatterns = [
     path('product/', include('api.product.urls')),
@@ -13,5 +10,6 @@ urlpatterns = [
     path("payment/", include("api.payment.urls")),
     path("cart/", include("api.cart.urls")),
     path("region/", include("api.region.urls")),
+    path("promoted-product/", include("api.promoted-product.urls")),
     path("transaction/", include("api.transaction.urls")),
 ]
