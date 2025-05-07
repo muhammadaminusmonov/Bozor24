@@ -41,7 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+<<<<<<< HEAD
     'rest_framework_simplejwt.token_blacklist',
+=======
+    'rest_framework.authtoken',
+>>>>>>> c7c14d0310ec89553a3089625b297ff7aca76daf
     'user',
     'category',
     'region',
@@ -49,7 +53,8 @@ INSTALLED_APPS = [
     'product',
     'cart',
     'orders',
-    'payment'
+    'payment',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -143,6 +148,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
