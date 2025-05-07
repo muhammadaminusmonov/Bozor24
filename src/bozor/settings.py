@@ -41,7 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+<<<<<<< HEAD
+    'rest_framework_simplejwt.token_blacklist',
+=======
     'rest_framework.authtoken',
+>>>>>>> c7c14d0310ec89553a3089625b297ff7aca76daf
     'user',
     'category',
     'region',
@@ -153,7 +157,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
 
