@@ -4,21 +4,31 @@ from .models import Category
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent_category', 'add_category_at')
-    list_filter = ('add_category_at', 'parent_category')
+    list_filter = ('parent_category', 'add_category_at')
     search_fields = ('name',)
-    ordering = ('-add_category_at',)
-    autocomplete_fields = ('parent_category',)
-    readonly_fields = ('add_category_at',)
+    ordering = ('name',)
+
+    # Optional: shows nested categories in a clearer way
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.select_related('parent_category')
+
+    # Optional: Better layout in the form
 
     fieldsets = (
         (None, {
             'fields': ('name', 'parent_category')
         }),
-        ('Timestamps', {
+        ('Date Info', {
+            'fields': ('add_category_at',),
+            'classes': ('collapse',),  # collapsible section
+        }),
+    )
+    readonly_fields = ('add_category_at',)
+    ('Timestamps', {
             'fields': ('add_category_at',),
             'classes': ('collapse',)
         }),
-    )
 
     def get_queryset(self, request):
         # Prefetch for performance in admin
