@@ -11,7 +11,7 @@ class Comment(models.Model):
     parent_comment = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
 
     class Meta:
-        abstact = True
+        abstract = True
 
 class CommentProduct(Comment):
     product = models.ForeignKey(Product, related_name='comment_product', on_delete=models.CASCADE)  # Ideally should be a ForeignKey to a Product model
