@@ -1,26 +1,26 @@
 from rest_framework import generics, permissions
-from .serializers import PaymentSerializer
-from ..permissions import IsOwnerOrReadOnly, IsSeller, IsPlatformAdmin
 from django_filters.rest_framework import DjangoFilterBackend
-
 from payment.models import Payment
+from .serializers import PaymentSerializer
+from .filters import PaymentFilter
+from api.permissions import IsPlatformAdmin, IsSeller, IsOwnerOrReadOnly
 
-class User_PaymentListView(generics.ListAPIView):
-    queryset = Payment.objects.all()
+class PaymentListCreateView(generics.ListCreateAPIView):
     serializer_class = PaymentSerializer
-    permission_classes = [permissions.AllowAny]
-    lookup_field = 'pk'
-
-    def get_object(self):
-        return Payment.objects.get(pk=self.kwargs['pk'])
-
-class Admin_PaymentListView(generics.ListAPIView):
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSeller, IsPlatformAdmin]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['user']
-    lookup_field = 'pk'
+    filterset_class = PaymentFilter
 
-    def get_object(self):
-        return Payment.objects.get(pk=self.kwargs['pk'])
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Payment.objects.all()
+        return Payment.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class PaymentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+    permission_classes = [IsSeller, IsPlatformAdmin]
