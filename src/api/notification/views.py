@@ -10,6 +10,6 @@ from django.core.exceptions import PermissionDenied
 class NotificationListView(generics.ListAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
-    # permission_classes = [IsSeller]
+    permission_classes = [IsSeller]
     # Tokken yoq bo'lsa
-    permission_classes = [permissions.AllowAny]
+    # permission_classes = [permissions.AllowAny]
