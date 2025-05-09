@@ -13,7 +13,7 @@ class RegisterAPIView(APIView):
             errors = serializer.errors
             if 'password' in errors:
                 return Response({"message": "password is weak"}, status=422)
-            if 'phone_number' in errors and "already exists" in str(errors['phone_number']):
+            if 'phone' in errors and "already exists" in str(errors['phone']):
                 return Response({"message": "user already exist"}, status=409)
             return Response({"message": "bad request"}, status=400)
 

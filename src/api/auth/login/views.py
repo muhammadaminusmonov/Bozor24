@@ -20,7 +20,7 @@ class LoginAPIView(APIView):
             return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
         user = authenticate(
-            phone=serializer.validated_data['phone_number'],
+            phone=serializer.validated_data['phone'],
             password=serializer.validated_data['password']
         )
 
