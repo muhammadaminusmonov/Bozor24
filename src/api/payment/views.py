@@ -2,7 +2,6 @@ from rest_framework import generics, permissions
 from .serializers import PaymentSerializer
 from ..permissions import IsOwnerOrReadOnly, IsSeller, IsPlatformAdmin
 from django_filters.rest_framework import DjangoFilterBackend
-
 from payment.models import Payment
 
 class User_PaymentListView(generics.ListAPIView):

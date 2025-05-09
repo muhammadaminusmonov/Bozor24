@@ -13,4 +13,5 @@ urlpatterns = [
     path("region/", include("api.region.urls")),
     path("promoted-product/", include("api.promoted-product.urls")),
     path("transaction/", include("api.transaction.urls")),
+    path("orders/", include("api.orders.urls")),
 ]
