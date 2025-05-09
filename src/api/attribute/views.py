@@ -18,3 +18,9 @@ class AttributeListCreateView(generics.ListCreateAPIView):
 class AttributeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Attribute.objects.all()
     serializer_class = AttributeSerializer
+
+    def get_permissions(self):
+        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
+            return [IsPlatformAdmin()]
+        else:
+            return [AllowAny()]
