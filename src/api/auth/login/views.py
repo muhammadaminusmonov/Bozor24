@@ -15,12 +15,12 @@ class LoginAPIView(APIView):
 
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
-
+        print(serializer)
         if not serializer.is_valid():
             return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
         user = authenticate(
-            phone_number=serializer.validated_data['phone_number'],
+            phone=serializer.validated_data['phone_number'],
             password=serializer.validated_data['password']
         )
 
