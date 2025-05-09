@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'payment',
     'review',
     'api',
+    'supportchat',
     'comment'
 ]
 
