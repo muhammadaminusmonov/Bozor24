@@ -16,17 +16,13 @@ class Comment(models.Model):
 
 
 class CommentProduct(Comment):
-    product = models.ForeignKey(Product, related_name='comment_product', on_delete=models.CASCADE)  # Ideally should be a ForeignKey to a Product model
+    product = models.ForeignKey(Product, related_name='comment_product', on_delete=models.CASCADE)
 
     def __str__(self):
-        def __str__(self):
-            return f"Product Comment: {self.id}"
+        return f"Product Comment: {self.id}"
 
-
-class CommentUser(models.Model):
-    seller = models.ForeignKey(User, related_name='user_comment', on_delete=models.CASCADE)  # Ideally should be a ForeignKey to a Seller model
+class CommentUser(Comment):  # Voris olish kerak edi
+    seller = models.ForeignKey(User, related_name='user_comment', on_delete=models.CASCADE)
 
     def __str__(self):
-        def __str__(self):
-            return f"Product Comment: {self.id}"
-
+        return f"User Comment: {self.id}"
