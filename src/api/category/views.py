@@ -4,16 +4,29 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import CategorySerializer
+from ..permissions import IsSeller, IsOwnerOrReadOnly, IsPlatformAdmin
+from rest_framework import permissions
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def get_ctg_list(request):
     if request.method == 'GET':
         categories = Category.objects.all()
         result = CategorySerializer(categories, many=True)
         print(result.data)
         return Response({"data": result.data})
-    elif request.method == "GET":
+    
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsPlatformAdmin])
+def admin_ctg_post(request):
+    if request.method == 'GET':
+        categories = Category.objects.all()
+        result = CategorySerializer(categories, many=True)
+        print(result.data)
+        return Response({"data": result.data})
+    elif request.method == "POST":
         serializer = CategorySerializer(data=request.data)
         print(serializer, serializer.is_valid())
         if serializer.is_valid():
@@ -21,7 +34,9 @@ def get_ctg_list(request):
             print(result)
             return Response({'data': 'success'}, status=status.HTTP_201_CREATED)
 
+
 @api_view(["GET","PUT", "DELETE"])
+@permission_classes([IsPlatformAdmin])
 def detail_ctg(request, pk):
     try:
         category = Category.objects.get(pk=pk)
