@@ -25,7 +25,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         except ValidationError as e:
             raise serializers.ValidationError({"password": list(e.messages)})
 
-        if User.objects.filter(phone_number=attrs['phone_number']).exists():
+        if User.objects.filter(phone=attrs['phone_number']).exists():
             raise serializers.ValidationError({"phone_number": "User with this phone number already exists."})
 
         return attrs
@@ -35,7 +35,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
         user = User.objects.create_user(
             username=username,
-            phone_number=validated_data['phone_number'],
+            phone=validated_data['phone_number'],
             first_name=validated_data['first_name'],
             password=validated_data['password1'],
             status=1

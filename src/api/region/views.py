@@ -13,7 +13,7 @@ class RegionListCreateView(mixins.ListModelMixin,
     def get_permissions(self):
         if self.request.method == 'POST':
             return [IsPlatformAdmin]
-        return [IsPlatformAdmin()]
+        return [IsAuthenticatedOrReadOnly()]
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
