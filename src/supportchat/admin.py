@@ -1,14 +1,14 @@
 from django.contrib import admin
 from .models import SupportChatRoom, SupportMessage
 
-class SupportMessageInline(admin.TabularInline):
-    model = SupportMessage
-    extra = 0
-    readonly_fields = ('sender', 'message', 'sent_at')
-    can_delete = False
-
 @admin.register(SupportChatRoom)
 class SupportChatRoomAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'created_at')
     search_fields = ('user__username',)
-    inlines = [SupportMessageInline]
+
+
+@admin.register(SupportMessage)
+class SupportMessageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'room', 'sender', 'sent_at')
+    search_fields = ('sender__username', 'message')
+    list_filter = ('sent_at',)
