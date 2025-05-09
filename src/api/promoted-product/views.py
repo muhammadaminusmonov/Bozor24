@@ -6,8 +6,6 @@ from .serializers import PromotedProductSerializer
 from django.contrib.auth.models import AnonymousUser
 from ..permissions import IsSeller, IsPlatformAdmin, IsOwnerOrReadOnly
 
-# USER VIEWS
-
 
 class UserPromotedProductListCreateView(mixins.ListModelMixin,
                                         mixins.CreateModelMixin,
@@ -35,7 +33,7 @@ class UserPromotedProductListCreateView(mixins.ListModelMixin,
 class UserPromotedProductDetailView(generics.RetrieveAPIView):
     queryset = PromotedProduct.objects.all()
     serializer_class = PromotedProductSerializer
-    # permission_classes = [IsAuthenticated, IsSeller, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsSeller, IsOwnerOrReadOnly]
     lookup_field = 'pk'
 
 
@@ -44,7 +42,7 @@ class UserPromotedProductDetailView(generics.RetrieveAPIView):
 class UserPromotedProductSlugDetailView(generics.RetrieveAPIView):
     queryset = PromotedProduct.objects.all()
     serializer_class = PromotedProductSerializer
-    # permission_classes = [IsAuthenticated, IsSeller, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsSeller, IsOwnerOrReadOnly]
     lookup_fields = ['pk', 'slug']  # Custom method needed
 
     def get_object(self):
@@ -59,7 +57,7 @@ class AdminPromotedProductListCreateView(mixins.ListModelMixin,
                                          mixins.CreateModelMixin,
                                          generics.GenericAPIView):
     serializer_class = PromotedProductSerializer
-    # permission_classes = [IsAuthenticated, IsPlatformAdmin]
+    permission_classes = [IsAuthenticated, IsPlatformAdmin]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['user', 'product__category__name']
 
@@ -75,5 +73,5 @@ class AdminPromotedProductListCreateView(mixins.ListModelMixin,
 class AdminPromotedProductRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     queryset = PromotedProduct.objects.all()
     serializer_class = PromotedProductSerializer
-    # permission_classes = [IsAuthenticated, IsPlatformAdmin]
+    permission_classes = [IsAuthenticated, IsPlatformAdmin]
     lookup_field = 'pk'

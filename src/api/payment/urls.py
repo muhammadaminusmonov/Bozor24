@@ -1,6 +1,7 @@
-from django.urls import path, include
+from django.urls import path
+from .views import PaymentListCreateView, PaymentDetailView
 
 urlpatterns = [
-    path('user/', include('api.payment.user.urls')),
-    path('admin/', include('api.payment.admin.urls')),
+    path('', PaymentListCreateView.as_view(), name='payment_list_create'),
+    path('<int:pk>/', PaymentDetailView.as_view(), name='payment_detail'),
 ]
