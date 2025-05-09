@@ -17,4 +17,5 @@ urlpatterns = [
     path("supportchat/", include("api.supportchat.urls")),
     path("order/", include("api.order.urls")),
     path("comment/", include('api.comment.urls')),
+    path("follow/", include("api.follow.urls")),
 ]
