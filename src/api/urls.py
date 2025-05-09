@@ -9,7 +9,7 @@ urlpatterns = [
     path("auth/logout/", include("api.auth.logout.urls")),
     path("payment/", include("api.payment.urls")),
     path("cart/", include("api.cart.urls")),
-
+    path("review/", include("api.review.urls")),
     path("region/", include("api.region.urls")),
     path("promoted-product/", include("api.promoted-product.urls")),
     path("transaction/", include("api.transaction.urls")),
