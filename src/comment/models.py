@@ -19,6 +19,7 @@ class CommentProduct(Comment):
     product = models.ForeignKey(Product, related_name='comment_product', on_delete=models.CASCADE)
 
     def __str__(self):
+
         return f"Comment by {self.user.username} on {self.product.name}"
 
 # Foydalanuvchi (sotuvchi) uchun izohlar
@@ -27,3 +28,4 @@ class CommentUser(models.Model):
 
     def __str__(self):
         return f"Comment on seller: {self.seller.username}"
+

@@ -7,11 +7,11 @@ from user.models import User
 class UserRegisterSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True, required=True)
     password2 = serializers.CharField(write_only=True, required=True)
-    phone_number = serializers.CharField(required=True)
+    phone = serializers.CharField(required=True)
 
     class Meta:
         model = User
-        fields = ['first_name', 'phone_number', 'password1', 'password2', 'username']
+        fields = ['first_name', 'phone', 'password1', 'password2', 'username']
         extra_kwargs = {
             'username': {'required': False}
         }
@@ -25,17 +25,17 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         except ValidationError as e:
             raise serializers.ValidationError({"password": list(e.messages)})
 
-        if User.objects.filter(phone_number=attrs['phone_number']).exists():
+        if User.objects.filter(phone=attrs['phone']).exists():
             raise serializers.ValidationError({"phone_number": "User with this phone number already exists."})
 
         return attrs
 
     def create(self, validated_data):
-        username = validated_data.get('username', f"user_{validated_data['phone_number']}")
+        username = validated_data.get('username', f"user_{validated_data['phone']}")
 
         user = User.objects.create_user(
             username=username,
-            phone_number=validated_data['phone_number'],
+            phone=validated_data['phone'],
             first_name=validated_data['first_name'],
             password=validated_data['password1'],
             status=1
