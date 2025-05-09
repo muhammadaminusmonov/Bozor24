@@ -15,9 +15,3 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Both phone number and password are required")
 
         return attrs
-
-class UserProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'first_name', 'phone', 'username', 'status']
-        read_only_fields = ['id', 'phone', 'status']
