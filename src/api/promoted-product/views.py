@@ -7,6 +7,7 @@ from django.contrib.auth.models import AnonymousUser
 from ..permissions import IsSeller, IsPlatformAdmin, IsOwnerOrReadOnly
 
 
+
 class UserPromotedProductListCreateView(mixins.ListModelMixin,
                                         mixins.CreateModelMixin,
                                         generics.GenericAPIView):

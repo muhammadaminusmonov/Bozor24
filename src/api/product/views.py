@@ -19,7 +19,7 @@ class PublicProductViewSet(mixins.ListModelMixin,
         .prefetch_related('images','promotedproduct_set')
     serializer_class = ProductSerializer
     filterset_class = ProductFilter
-    pagination_class =
+    # pagination_class =
 
     def get_queryset(self):
         qs = super().get_queryset()
