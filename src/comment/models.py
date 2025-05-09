@@ -14,6 +14,7 @@ class Comment(models.Model):
     class Meta:
         abstract = True
 
+
 class CommentProduct(Comment):
     product = models.ForeignKey(Product, related_name='comment_product', on_delete=models.CASCADE)
 

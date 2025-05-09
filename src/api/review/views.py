@@ -3,7 +3,6 @@ from rest_framework.exceptions import PermissionDenied
 from review.models import Review
 from .serializers import ReviewSerializers
 from ..permissions import IsOwnerOrReadOnly, IsSeller
-from review.models import Review
 
 
 class ReviewListCreateView(generics.ListCreateAPIView):
