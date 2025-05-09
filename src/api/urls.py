@@ -13,8 +13,8 @@ urlpatterns = [
     path("region/", include("api.region.urls")),
     path("promoted-product/", include("api.promoted-product.urls")),
     path("transaction/", include("api.transaction.urls")),
-    path("orders/", include("api.orders.urls")),
     path("supportchat/", include("api.supportchat.urls")),
     path("order/", include("api.order.urls")),
-    path("comment/", include('api.comment.urls'))
+    path("comment/", include('api.comment.urls')),
+    path("notification/", include("api.notification.urls")),
 ]

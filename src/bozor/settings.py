@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'review',
     'api',
     'supportchat',
-    'comment'
+    'comment',
+    'notification',
 ]
 
 MIDDLEWARE = [
