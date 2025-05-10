@@ -10,4 +10,4 @@ class PromotedProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = PromotedProduct
         fields = '__all__'
-        read_only_fields = ['user']  # user field is auto set in view
+        read_only_fields = ['user']

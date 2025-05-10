@@ -5,7 +5,7 @@ from ..permissions import IsSeller, IsPlatformAdmin
 
 class SupportChatRoomListCreateView(generics.ListCreateAPIView):
     serializer_class = SupportChatRoomSerializer
-    permission_classes = [permissions.IsAuthenticated, IsSeller]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -20,7 +20,7 @@ class SupportChatRoomListCreateView(generics.ListCreateAPIView):
 class SupportChatRoomUpdateView(generics.UpdateAPIView):
     queryset = SupportChatRoom.objects.all()
     serializer_class = SupportChatRoomSerializer
-    permission_classes = [permissions.IsAuthenticated, IsSeller]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class SupportMessageListCreateView(generics.ListCreateAPIView):
