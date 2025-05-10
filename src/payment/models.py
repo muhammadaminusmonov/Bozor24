@@ -9,8 +9,8 @@ class Payment(models.Model):
         ('1', "Online Transaction"),
         ('2', "ATM")
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.BigIntegerField(default=0)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    amount = models.BigIntegerField()
     payment_at = models.DateTimeField(auto_now_add=True)
     method = models.CharField(choices=method_choice, default=1)
 
