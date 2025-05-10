@@ -19,4 +19,5 @@ urlpatterns = [
     path("comment/", include('api.comment.urls')),
     path("notification/", include("api.notification.urls")),
     path("follow/", include("api.follow.urls")),
+    path("attribute/", include("api.attribute.urls")),
 ]
