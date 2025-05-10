@@ -7,7 +7,11 @@ User = get_user_model()
 
 class Order(models.Model):
     STATUS_TYPES = [
-        (1, ""),
+        (1, "Completed"),
+        (2, "Cancelled"),
+        (3, "Pending"),
+        (4, "Processing"),
+        (5, "Canceled"),
     ]
     PAYMENT_METHOD = [
         (1, "Bozor24 account"),
