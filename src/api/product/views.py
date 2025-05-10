@@ -1,5 +1,3 @@
-# views.py
-
 from django.db.models import Q, F, Case, When, Value, IntegerField
 from rest_framework import viewsets, mixins, filters, status
 from rest_framework.decorators import action
@@ -19,7 +17,6 @@ class PublicProductViewSet(mixins.ListModelMixin,
         .prefetch_related('images','promotedproduct_set')
     serializer_class = ProductSerializer
     filterset_class = ProductFilter
-    # pagination_class =
 
     def get_queryset(self):
         qs = super().get_queryset()

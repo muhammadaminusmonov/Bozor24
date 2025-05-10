@@ -15,10 +15,10 @@ def validate_token(token):
         elif untyped_token.token_type == 'refresh':
             return RefreshToken(token)
         else:
-            raise TokenError('Noto\'g\'ri token turi')
+            raise TokenError('Invalid token type')
 
     except TokenError as e:
-        raise TokenError(f'Token noto\'g\'ri: {str(e)}')
+        raise TokenError(f'Invalid token: {str(e)}')
 class LoginWithAccessTokenView(APIView):
     def post(self, request):
         token_str = request.headers.get("Authorization")
@@ -48,11 +48,10 @@ class LoginWithAccessTokenView(APIView):
 
 class RefreshAccessTokenView(APIView):
     def post(self, request):
-        token_str = request.headers.get("Authorization")
+        token_str = request.data.get("refresh")
 
-        if not token_str or not token_str.startswith("Bearer "):
+        if not token_str:
             return Response({"detail": "Refresh token required"}, status=400)
-        token_str = token_str.split(" ")[1]
 
         try:
             refresh_token = RefreshToken(token_str)
