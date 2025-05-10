@@ -6,7 +6,7 @@ from api.permissions import IsSeller, IsPlatformAdmin
 
 class TransactionListCreateView(generics.ListCreateAPIView):
     serializer_class = TransactionSerializer
-    permission_classes = [IsSeller, IsPlatformAdmin]
+    permission_classes = [IsSeller | IsPlatformAdmin]
 
     def get_queryset(self):
         user = self.request.user
@@ -21,7 +21,7 @@ class TransactionListCreateView(generics.ListCreateAPIView):
 class TransactionDetailView(generics.RetrieveUpdateAPIView):  # no DestroyAPIView!
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
-    permission_classes = [IsSeller, IsPlatformAdmin]
+    permission_classes = [IsSeller | IsPlatformAdmin]
 
     def get_object(self):
         return Transaction.objects.get(pk=self.kwargs['pk'])

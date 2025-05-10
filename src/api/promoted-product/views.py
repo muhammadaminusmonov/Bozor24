@@ -26,7 +26,7 @@ class UserPromotedProductListCreateView(mixins.ListModelMixin,
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
-    # ✅ Add this method below post()
+    # Add this method below post()
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -34,7 +34,7 @@ class UserPromotedProductListCreateView(mixins.ListModelMixin,
 class UserPromotedProductDetailView(generics.RetrieveAPIView):
     queryset = PromotedProduct.objects.all()
     serializer_class = PromotedProductSerializer
-    permission_classes = [IsAuthenticated, IsSeller, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated | IsSeller | IsOwnerOrReadOnly]
     lookup_field = 'pk'
 
 
@@ -43,7 +43,7 @@ class UserPromotedProductDetailView(generics.RetrieveAPIView):
 class UserPromotedProductSlugDetailView(generics.RetrieveAPIView):
     queryset = PromotedProduct.objects.all()
     serializer_class = PromotedProductSerializer
-    permission_classes = [IsAuthenticated, IsSeller, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated | IsSeller, IsOwnerOrReadOnly]
     lookup_fields = ['pk', 'slug']  # Custom method needed
 
     def get_object(self):

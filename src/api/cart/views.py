@@ -26,5 +26,5 @@ class CartCreateView(generics.CreateAPIView):
 
 class CartDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CartSerializer
-    permission_classes = [permissions.IsAuthenticated, IsSeller, IsPlatformAdmin]
+    permission_classes = [permissions.IsAuthenticated, IsSeller | IsPlatformAdmin]
     queryset = Cart.objects.all()
