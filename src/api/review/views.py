@@ -2,8 +2,12 @@ from rest_framework import generics, permissions
 from rest_framework.exceptions import PermissionDenied
 from review.models import Review
 from .serializers import ReviewSerializers
-from ..permissions import IsOwnerOrReadOnly, IsSeller
 
+from rest_framework.permissions import BasePermission
+
+class IsSeller(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
 
 class ReviewListCreateView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
@@ -18,10 +22,3 @@ class ReviewListCreateView(generics.ListCreateAPIView):
             raise PermissionDenied("You must be logged in to post a review.")
         serializer.save(user=self.request.user)
 
-# Agar tokken bo'lmasa
-    # def perform_create(self, serializer):
-    #     # Endi anonim foydalanuvchilar uchun user bo'lmaydi, shuning uchun tekshirish zarur
-    #     if self.request.user.is_authenticated:
-    #         serializer.save(user=self.request.user)
-    #     else:
-    #         serializer.save()
