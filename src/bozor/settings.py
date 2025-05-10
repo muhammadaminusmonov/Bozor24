@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'rest_framework.authtoken',
+    'django_filters',
     'user',
     'category',
     'region',
@@ -49,8 +53,11 @@ INSTALLED_APPS = [
     'cart',
     'orders',
     'payment',
+    'review',
     'api',
     'supportchat',
+    'comment',
+    'notification',
 ]
 
 MIDDLEWARE = [

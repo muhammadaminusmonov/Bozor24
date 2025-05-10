@@ -1,52 +1,49 @@
 from django.contrib import admin
-from django.utils.translation import gettext_lazy as _
-from .models import User
-from region.models import Region
-from django.db import models
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils.html import format_html
+from .models import User, Follow
 
 
-class UserAdmin(admin.ModelAdmin):
-    # List display to show important fields in the list view
-    list_display = ('username', 'role', 'status', 'total_money', 'region', 'phone')
-    list_filter = ('status', 'role', 'region')  # Allow filtering by status, role, and region
-    search_fields = ('username', 'phone')  # Allow searching by username and phone number
-    ordering = ('-total_money',)  # Default ordering by total_money (descending)
-
-    # Form layout for a more user-friendly display
+@admin.register(User)
+class UserAdmin(BaseUserAdmin):
+    list_display = (
+        'username', 'email', 'phone', 'role', 'status_display', 'region', 'total_money', 'date_joined'
+    )
+    list_filter = ('role', 'status', 'region', 'is_staff', 'is_superuser')
+    search_fields = ('username', 'email', 'phone')
+    ordering = ('-date_joined',)
+    readonly_fields = ('date_joined', 'last_login')
     fieldsets = (
         (None, {
-            'fields': ('username', 'password', 'first_name', 'last_name')
+            'fields': ('username', 'email', 'phone', 'password')
         }),
-        (_('User Information'), {
-            'fields': ('role', 'status', 'total_money', 'region', 'phone'),
+        ('Personal Info', {
+            'fields': ('first_name', 'last_name', 'region', 'role', 'status', 'total_money')
+        }),
+        ('Permissions', {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
+        }),
+        ('Important Dates', {
+            'fields': ('last_login', 'date_joined')
         }),
     )
 
-    # Ensure role choices are displayed clearly using the Select widget
-    formfield_overrides = {
-        models.CharField: {'widget': admin.widgets.AdminTextInputWidget(attrs={'size': 30})},
-        models.SmallIntegerField: {'widget': admin.widgets.AdminRadioSelect()},
-    }
-
-    # Adding custom actions for batch updates
-    actions = ['mark_active', 'mark_inactive']
-
-    def mark_active(self, request, queryset):
-        """Mark selected users as Active"""
-        queryset.update(status=1)
-        self.message_user(request, _("Selected users marked as Active"))
-
-    def mark_inactive(self, request, queryset):
-        """Mark selected users as Inactive"""
-        queryset.update(status=0)
-        self.message_user(request, _("Selected users marked as Inactive"))
-
-    mark_active.short_description = _('Mark selected as Active')
-    mark_inactive.short_description = _('Mark selected as Inactive')
-
-    # Using custom widgets or a custom form for better UI if necessary
-    # For instance, adding a custom widget for region selection could improve UX
+    def status_display(self, obj):
+        color = "green" if obj.status == 1 else "red"
+        return format_html('<strong style="color:{};">{}</strong>', color, obj.get_status_display())
+    status_display.short_description = 'Status'
 
 
-# Register UserAdmin
-admin.site.register(User, UserAdmin)
+@admin.register(Follow)
+class FollowAdmin(admin.ModelAdmin):
+    list_display = ('follower_link', 'seller_link', 'follow_at')
+    list_filter = ('follow_at',)
+    search_fields = ('follower__username', 'seller__username')
+
+    def follower_link(self, obj):
+        return format_html('<a href="/admin/user/user/{}/change/">{}</a>', obj.follower.id, obj.follower.username)
+    follower_link.short_description = 'Follower'
+
+    def seller_link(self, obj):
+        return format_html('<a href="/admin/user/user/{}/change/">{}</a>', obj.seller.id, obj.seller.username)
+    seller_link.short_description = 'Seller'

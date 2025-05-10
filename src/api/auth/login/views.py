@@ -2,10 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import authenticate
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from .serializers import UserLoginSerializer, UserProfileSerializer
+from django.contrib.auth import get_user_model
+from .serializers import UserLoginSerializer
 
+User = get_user_model()
 
 class LoginAPIView(APIView):
     def get_permissions(self):
@@ -15,16 +16,17 @@ class LoginAPIView(APIView):
 
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
-        print(serializer)
         if not serializer.is_valid():
             return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = authenticate(
-            phone=serializer.validated_data['phone_number'],
-            password=serializer.validated_data['password']
-        )
+        phone = serializer.validated_data['phone']
+        password = serializer.validated_data['password']
 
-        if not user:
+        try:
+            user = User.objects.get(phone=phone)
+            if not user.check_password(password):
+                return Response({"message": "invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        except User.DoesNotExist:
             return Response({"message": "invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
         try:
