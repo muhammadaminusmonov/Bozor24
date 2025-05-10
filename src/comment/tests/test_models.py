@@ -25,16 +25,11 @@ class CommentModelsTest(TestCase):
 
         # Mahsulotni yaratish
         self.product = Product.objects.create(
-            title='Test Product',
-            seller=self.user,
-            price=100,
-            discount=None,
-            discount_limit_date=None,
-            description='Test Description',
-            quantity=10,
-            category=self.category,
-            region=self.region,
-            slug='test-product'
+            title="Test Product",
+            price=100.0,
+            quantity=10,  # ✅ required
+            description="A simple test product",
+            slug="test-product"  # ✅ required since it's unique
         )
 
     def test_commentproduct_creation_and_str(self):

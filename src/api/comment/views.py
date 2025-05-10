@@ -1,51 +1,34 @@
-from comment.models import Comment
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.views import APIView 
-from .serializers import CommentSerializer
-from api.permissions import IsOwnerOrReadOnly, IsPlatformAdmin, IsSeller
+from rest_framework import viewsets, permissions
+from comment.models import CommentProduct, CommentUser
+from .serializers import CommentProductSerializer, CommentUserSerializer
+from ..permissions import IsSeller, IsPlatformAdmin
 
-class CommentView(APIView):
-    parser_classes = [IsSeller, IsPlatformAdmin, IsOwnerOrReadOnly]
+class CommentProductViewSet(viewsets.ModelViewSet):
+    queryset = CommentProduct.objects.all()
+    serializer_class = CommentProductSerializer
 
-    def get(self, request):
-        comments = Comment.objects.all()
-        result = CommentSerializer(comments, many=True)
-        return Response({"data": result.data})
+    def get_permissions(self):
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [IsSeller | IsPlatformAdmin]
+        elif self.action == 'create':
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
 
-    def post(self, request):
-        serializer = CommentSerializer(data=request.data)
-        if serializer.is_valid():
-            result = serializer.save()
-            return Response({"data": CommentSerializer(result).data}, status=status.HTTP_201_CREATED)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
+    def get_queryset(self):
+        product_id = self.request.query_params.get('product')
+        if product_id:
+            return self.queryset.filter(product__id=product_id)
+        return self.queryset
 
-class CommentDetailView(APIView):
-    permission_classes = [IsOwnerOrReadOnly, IsPlatformAdmin, IsSeller]
+class CommentUserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = CommentUser.objects.all()
+    serializer_class = CommentUserSerializer
 
-    def get(self, request, pk):
-        try:
-            comments = Comment.objects.get(pk=pk)
-        except Comment.DoesNotExist:
-            return Response({"Eror":"Could not found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = CommentSerializer(comments)
-        return Response(serializer.data)
-    
-    def put(self, request, pk):
-        try:
-            comments = Comment.objects.get(pk=pk)
-        except Comment.DoesNotExist:
-            return Response({"Eror":"Could not found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = CommentSerializer(comments, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({"Error": "Could not edit"}, status=status.HTTP_400_BAD_REQUEST)
-    
-    def delete(self, request, pk):
-        try:
-            comment = Comment.objects.get(pk=pk)
-        except Comment.DoesNotExist:
-            return Response({"Error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
-        comment.delete()
-        return Response({"message": "Comment successfully deleted"}, status=status.HTTP_204_NO_CONTENT)
+    def get_queryset(self):
+        seller_id = self.request.query_params.get('seller')
+        if seller_id:
+            return self.queryset.filter(seller__id=seller_id)
+        return self.queryset
