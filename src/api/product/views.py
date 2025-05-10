@@ -1,6 +1,7 @@
 from django.db.models import Q, F, Case, When, Value, IntegerField
 from rest_framework import viewsets, mixins, filters, status
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from product.models import Product, PromotedProduct
 from .serializers import ProductSerializer, PromotedProductSerializer
@@ -56,7 +57,7 @@ class SellerProductViewSet(viewsets.ModelViewSet):
     Authenticated sellers manage *only* their products.
     """
     serializer_class = ProductSerializer
-    permission_classes = [IsSeller, IsPlatformAdmin]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Product.objects.filter(seller=self.request.user)
