@@ -4,6 +4,12 @@ from region.models import Region
 from .serializers import RegionSerializer
 from ..permissions import IsSeller, IsPlatformAdmin
 
+from rest_framework.permissions import BasePermission
+
+class IsPlatformAdmin(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.is_staff  # yoki custom admin field
+
 class RegionListCreateView(mixins.ListModelMixin,
                            mixins.CreateModelMixin,
                            generics.GenericAPIView):
@@ -12,7 +18,7 @@ class RegionListCreateView(mixins.ListModelMixin,
 
     def get_permissions(self):
         if self.request.method == 'POST':
-            return [IsPlatformAdmin]
+            return [IsPlatformAdmin()]
         return [IsAuthenticatedOrReadOnly()]
 
     def get(self, request, *args, **kwargs):
@@ -20,6 +26,7 @@ class RegionListCreateView(mixins.ListModelMixin,
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
 
 
 class RegionRetrieveUpdateDeleteView(mixins.RetrieveModelMixin,
@@ -43,3 +50,4 @@ class RegionRetrieveUpdateDeleteView(mixins.RetrieveModelMixin,
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+

@@ -1,12 +1,14 @@
 # views.py
 from rest_framework import generics, permissions
+from rest_framework.permissions import IsAuthenticated
+
 from payment.models import Transaction
 from .serializers import TransactionSerializer
 from api.permissions import IsSeller, IsPlatformAdmin
 
 class TransactionListCreateView(generics.ListCreateAPIView):
     serializer_class = TransactionSerializer
-    permission_classes = [IsSeller, IsPlatformAdmin]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
