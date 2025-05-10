@@ -42,7 +42,7 @@ class FollowModelTest(TestCase):
 class NotificationModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='charlie', password='pass')
-        self.product = Product.objects.create(name='Test Product', price=10)
+        # self.product = Product.objects.create(title='Test Product', price=10)
 
     def test_create_notification_without_product(self):
         """Productsiz notification yaratish"""

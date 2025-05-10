@@ -20,7 +20,7 @@ class CommentProduct(Comment):
 
     def __str__(self):
 
-        return f"Comment by {self.user.username} on {self.product.name}"
+        return f"Comment by {self.user.username} on {self.product.title}"
 
 # Foydalanuvchi (sotuvchi) uchun izohlar
 class CommentUser(models.Model):

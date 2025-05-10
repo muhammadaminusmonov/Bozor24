@@ -26,7 +26,7 @@ class PaymentTransactionTestCase(TestCase):
 
         self.transaction = Transaction.objects.create(
             order=self.order,
-            buyer=self.payment,
+            buyer=self.user,
             amount=150000,
             status=1
         )
@@ -38,7 +38,7 @@ class PaymentTransactionTestCase(TestCase):
 
     def test_transaction_created(self):
         self.assertEqual(self.transaction.order, self.order)
-        self.assertEqual(self.transaction.buyer, self.payment)
+        self.assertEqual(self.transaction.buyer, self.payment.user)
         self.assertEqual(self.transaction.amount, 150000)
         self.assertEqual(self.transaction.status, 1)
 

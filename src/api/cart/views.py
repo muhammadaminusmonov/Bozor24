@@ -13,7 +13,7 @@ class CartListView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
+        if user.role == 'admin':
             return Cart.objects.all()
         return Cart.objects.filter(user=user)
 
