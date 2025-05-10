@@ -39,7 +39,7 @@ class RegionRetrieveUpdateDeleteView(mixins.RetrieveModelMixin,
 
     def get_permissions(self):
         if self.request.method in ['PUT', 'DELETE']:
-            return [IsAuthenticatedOrReadOnly(), IsPlatformAdmin()]
+            return [IsAuthenticatedOrReadOnly | IsPlatformAdmin]
         return [IsAuthenticatedOrReadOnly()]
 
     def get(self, request, *args, **kwargs):
