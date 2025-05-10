@@ -8,7 +8,10 @@ from api.permissions import IsSeller, IsPlatformAdmin
 
 class TransactionListCreateView(generics.ListCreateAPIView):
     serializer_class = TransactionSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsSeller | IsPlatformAdmin]
+
+    # permission_classes = [IsAuthenticated]
+
 
     def get_queryset(self):
         user = self.request.user
@@ -25,7 +28,9 @@ from rest_framework.exceptions import NotFound
 class TransactionDetailView(generics.RetrieveUpdateAPIView):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsSeller | IsPlatformAdmin]
+    # permission_classes = [IsAuthenticated]
+
 
     def get_object(self):
         try:
