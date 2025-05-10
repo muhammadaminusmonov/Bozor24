@@ -10,7 +10,7 @@ class CategoryListCreateView(APIView):
     def get_permissions(self):
         if self.request.method == 'GET':
             return [permissions.AllowAny()]
-        return [permissions.IsAuthenticated(), IsPlatformAdmin()]
+        return [IsPlatformAdmin()]
 
     def get(self, request):
         categories = Category.objects.all()

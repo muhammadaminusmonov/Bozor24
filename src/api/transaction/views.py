@@ -20,10 +20,16 @@ class TransactionListCreateView(generics.ListCreateAPIView):
         serializer.save(buyer=self.request.user)
 
 
-class TransactionDetailView(generics.RetrieveUpdateAPIView):  # no DestroyAPIView!
+from rest_framework.exceptions import NotFound
+
+class TransactionDetailView(generics.RetrieveUpdateAPIView):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
-    permission_classes = [IsSeller, IsPlatformAdmin]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return Transaction.objects.get(pk=self.kwargs['pk'])
+        try:
+            return Transaction.objects.get(pk=self.kwargs['pk'])
+        except Transaction.DoesNotExist:
+            raise NotFound(detail="Transaction not found.")
+
