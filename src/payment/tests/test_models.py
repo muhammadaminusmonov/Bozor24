@@ -20,9 +20,8 @@ class PaymentTransactionTestCase(TestCase):
         self.payment = Payment.objects.create(
             user=self.user,
             amount=150000,
-            method=1
+            method='1'  # string formatda bo'lishi kerak
         )
-
 
         self.transaction = Transaction.objects.create(
             order=self.order,
@@ -34,14 +33,14 @@ class PaymentTransactionTestCase(TestCase):
     def test_payment_created(self):
         self.assertEqual(self.payment.user, self.user)
         self.assertEqual(self.payment.amount, 150000)
-        self.assertEqual(self.payment.method, 1)
+        self.assertEqual(self.payment.method, '1')  # string bo'lishi kerak
 
     def test_transaction_created(self):
         self.assertEqual(self.transaction.order, self.order)
-        self.assertEqual(self.transaction.buyer, self.payment.user)
+        self.assertEqual(self.transaction.buyer, self.user)
         self.assertEqual(self.transaction.amount, 150000)
         self.assertEqual(self.transaction.status, 1)
 
     def test_str_methods(self):
-        self.assertEqual(str(self.payment), "150000")  # string bilan solishtirish
+        self.assertEqual(str(self.payment), "150000")
         self.assertEqual(str(self.transaction), "150000")
