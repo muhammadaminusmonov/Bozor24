@@ -25,7 +25,7 @@ class PaymentTransactionTestCase(TestCase):
 
         self.transaction = Transaction.objects.create(
             order=self.order,
-            buyer=self.user,  # MUHIM: buyer bo'sh bo'lmasligi kerak
+            buyer=self.user,
             amount=150000,
             status=1
         )

@@ -2,8 +2,6 @@ from django.test import TestCase
 from comment.models import CommentProduct  # Sizning model joylashgan joyga mos ravishda import qilish
 from django.db.utils import IntegrityError
 
-
-
 class CommentProductTest(TestCase):
     def test_create_comment(self):
         # To'g'ri comment yaratish

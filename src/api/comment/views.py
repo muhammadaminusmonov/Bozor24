@@ -1,5 +1,4 @@
 from comment.models import Comment
-from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView 
@@ -12,12 +11,10 @@ class CommentView(APIView):
     def get(self, request):
         comments = Comment.objects.all()
         result = CommentSerializer(comments, many=True)
-        print(result.data)
         return Response({"data": result.data})
 
     def post(self, request):
         serializer = CommentSerializer(data=request.data)
-        print(serializer, serializer.is_valid())
         if serializer.is_valid():
             result = serializer.save()
             return Response({"data": CommentSerializer(result).data}, status=status.HTTP_201_CREATED)
