@@ -11,7 +11,7 @@ from .filters import OrderFilter
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated, IsPlatformAdmin]
+    permission_classes = [IsAuthenticated | IsPlatformAdmin]
     filter_backends = [DjangoFilterBackend]
     filterset_class = OrderFilter
 
